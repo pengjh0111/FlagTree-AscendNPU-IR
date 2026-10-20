@@ -23,6 +23,7 @@
 #include "mlir/Dialect/Arith/IR/Arith.h"
 #include "mlir/Dialect/Func/IR/FuncOps.h"
 #include "mlir/Transforms/DialectConversion.h"
+#include "triton-shared/Dialect/TensorView/IR/TensorViewDialect.h"
 
 namespace mlir {
 #define GEN_PASS_DEF_TRITONGLOBALKERNELARGSTOHIVMOP
@@ -146,7 +147,8 @@ void addFuncDynMemrefArgAttr(func::FuncOp funOp, IRRewriter &rewriter) {
   FunctionType funcTy = funOp.getFunctionType();
   for (auto [idx, type] : llvm::enumerate(funcTy.getInputs())) {
     auto memref = dyn_cast<MemRefType>(type);
-    if (memref != nullptr && !memref.hasStaticShape()) {
+    if (isa<triton::tv::PtrType>(type) ||
+        (memref != nullptr && !memref.hasStaticShape())) {
       memrefToDescriptorFlag[idx] = true;
     }
   }

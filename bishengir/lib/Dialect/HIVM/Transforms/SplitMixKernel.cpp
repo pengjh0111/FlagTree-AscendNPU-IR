@@ -28,6 +28,7 @@
 #include "mlir/Dialect/Tensor/Transforms/Transforms.h"
 #include "mlir/Interfaces/LoopLikeInterface.h"
 #include "mlir/Transforms/GreedyPatternRewriteDriver.h"
+#include "triton-shared/Dialect/TensorView/IR/TensorViewDialect.h"
 #include "llvm/ADT/TypeSwitch.h"
 #include "llvm/Support/Casting.h"
 #include "llvm/Support/Debug.h"
@@ -128,6 +129,11 @@ static SmallVector<Value> getOutOperands(Operation *op) {
 
   if (auto dpsOp = dyn_cast<DestinationStyleOpInterface>(op)) {
     return dpsOp.getDpsInits();
+  }
+  if (isa<triton::tv::ViewLoadOp, triton::tv::PtrLoadOp>(op)) {
+    OpBuilder builder(op);
+    return {createZeroOrEmptyStub(builder, op->getLoc(),
+                                  op->getResult(0).getType())};
   }
   if (auto callOp = dyn_cast<func::CallOp>(op)) {
     SmallVector<Value> outOperands;

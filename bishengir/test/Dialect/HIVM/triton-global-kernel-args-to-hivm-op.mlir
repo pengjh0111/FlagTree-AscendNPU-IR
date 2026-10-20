@@ -106,3 +106,11 @@ module {
     return
   }
 }
+
+// -----
+
+// CHECK-LABEL: @tensor_view_args(
+// CHECK: func_dyn_memref_args = dense<[true, false, false, false]> : vector<4xi1>
+func.func @tensor_view_args(%base: !tv.ptr<f32>, %nx: i32, %ny: i32, %nz: i32, %ix: i32, %iy: i32, %iz: i32) attributes {hacc.entry, hacc.function_kind = #hacc.function_kind<DEVICE>} {
+  return
+}

@@ -126,6 +126,22 @@ include_directories(${MLIR_INCLUDE_DIR})
 include_directories(${BISHENGIR_MAIN_INCLUDE_DIR})
 include_directories(${BISHENGIR_INCLUDE_DIR})
 
+# Share the dialect definitions with the frontend without building FLIR passes.
+set(BISHENGIR_TENSOR_VIEW_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../flir"
+    CACHE PATH "FLIR checkout providing the TensorView dialect")
+set(TENSOR_VIEW_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/tensor-view")
+include_directories(${BISHENGIR_TENSOR_VIEW_SOURCE_DIR}/include)
+include_directories(${TENSOR_VIEW_BINARY_DIR}/include)
+add_subdirectory(
+  ${BISHENGIR_TENSOR_VIEW_SOURCE_DIR}/include/triton-shared/Dialect/TensorView/IR
+  ${TENSOR_VIEW_BINARY_DIR}/include/triton-shared/Dialect/TensorView/IR)
+add_subdirectory(
+  ${BISHENGIR_TENSOR_VIEW_SOURCE_DIR}/lib/Dialect/TensorView/IR
+  ${TENSOR_VIEW_BINARY_DIR}/lib)
+target_include_directories(TensorViewIR PUBLIC
+  $<BUILD_INTERFACE:${BISHENGIR_TENSOR_VIEW_SOURCE_DIR}/include>
+  $<BUILD_INTERFACE:${TENSOR_VIEW_BINARY_DIR}/include>)
+
 # Adding tblgen tools here as calling add_tablegen sets some variables in
 # PARENT_SCOPE which gets lost if that folder is included from another directory
 # like tools

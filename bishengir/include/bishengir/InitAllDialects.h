@@ -34,8 +34,10 @@
 #include "bishengir/Dialect/Symbol/IR/Symbol.h"
 #include "mlir/IR/DialectRegistry.h"
 #include "mlir/IR/MLIRContext.h"
+#include "triton-shared/Dialect/TensorView/IR/TensorViewDialect.h"
 
 #if (!BISHENGIR_BUILD_STANDALONE_IR_ONLY)
+#include "bishengir/Conversion/TensorViewToTemplate/TensorViewToTemplate.h"
 #include "bishengir/Dialect/Annotation/Transforms/BufferizableOpInterfaceImpl.h"
 #include "bishengir/Dialect/Bufferization/Transforms/TilingInterfaceImpl.h"
 #include "bishengir/Dialect/HFusion/Transforms/BufferizableOpInterfaceImpl.h"
@@ -58,7 +60,8 @@ namespace bishengir {
 /// Add all the hivm-specific dialects to the provided registry.
 inline void registerAllDialects(mlir::DialectRegistry &registry) {
   // clang-format off
-  registry.insert<mlir::annotation::AnnotationDialect,
+  registry.insert<mlir::triton::tv::TensorViewDialect,
+                  mlir::annotation::AnnotationDialect,
                   mlir::hacc::HACCDialect,
                   mlir::hfusion::HFusionDialect,
                   mlir::hivm::HIVMDialect,
@@ -78,6 +81,7 @@ inline void registerAllDialects(mlir::DialectRegistry &registry) {
 
 #if (!BISHENGIR_BUILD_STANDALONE_IR_ONLY)
   // Register all external models.
+  mlir::triton::tv::registerTensorViewBackendInterfaces(registry);
   mlir::hivm::registerBufferizableOpInterfaceExternalModels(registry);
   mlir::annotation::registerBufferizableOpInterfaceExternalModels(registry);
   mlir::hfusion::registerTilingInterfaceExternalModels(registry);

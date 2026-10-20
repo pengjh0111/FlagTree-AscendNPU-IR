@@ -16,6 +16,7 @@
 //===----------------------------------------------------------------------===//
 
 #include "bishengir/Conversion/Passes.h"
+#include "bishengir/Conversion/TensorViewToTemplate/TensorViewToTemplate.h"
 #include "bishengir/Dialect/Annotation/Transforms/Passes.h"
 #include "bishengir/Dialect/HFusion/IR/HFusion.h"
 #include "bishengir/Dialect/HIVM/IR/HIVM.h"
@@ -398,6 +399,8 @@ void buildOptimizeHIVMPipeline(OpPassManager &pm,
   pm.nest<func::FuncOp>().addPass(createInsertInitAndFinishForDebugPass());
   pm.nest<func::FuncOp>().addPass(createMarkDisableLoadPass());
   syncBlockLockPipeline(pm, SyncBlockLockPipelinePhase::Finalize);
+  if (!options.enableTensorViewDecompose)
+    pm.addPass(createConvertTensorViewToTemplatePass());
   pm.addPass(createConvertHIVMToStandardPass());
 }
 

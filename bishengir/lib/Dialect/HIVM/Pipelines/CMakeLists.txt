@@ -12,6 +12,7 @@ add_bishengir_dialect_library(BiShengIRHIVMPipelines
   BiShengIRMathExtDialect
   BiShengIRMemRefTransforms
   BiShengIRSCFTransforms
+  BiShengIRTensorViewToTemplate
   BiShengIRTensorToHIVM
   BiShengIRTensorTransforms
   BiShengIRTransform

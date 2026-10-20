@@ -29,6 +29,7 @@
 #include "bishengir/Conversion/MathToHFusion/MathToHFusion.h"
 #include "bishengir/Conversion/TensorToHFusion/TensorToHFusion.h"
 #include "bishengir/Conversion/TensorToHIVM/TensorToHIVM.h"
+#include "bishengir/Conversion/TensorViewToTemplate/TensorViewToTemplate.h"
 #include "mlir/Pass/Pass.h"
 
 #if BISHENGIR_ENABLE_TORCH_CONVERSIONS

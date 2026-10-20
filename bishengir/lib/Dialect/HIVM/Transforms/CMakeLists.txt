@@ -105,6 +105,7 @@ add_bishengir_dialect_library(BiShengIRHIVMTransforms
   BiShengIRHIVMTransformsIncGen
 
   LINK_LIBS PUBLIC
+  TensorViewIR
   MLIRAffineDialect
   MLIRAffineTransforms
   MLIRArithDialect

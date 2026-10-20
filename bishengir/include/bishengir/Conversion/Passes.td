@@ -201,4 +201,13 @@ def ConvertTorchToSymbol : Pass<"convert-torch-to-symbol", "func::FuncOp"> {
 }
 #endif
 
+
+// Preserve view construction until the same stage as HIVM library lowering.
+def ConvertTensorViewToTemplate : Pass<"convert-tensor-view-to-template", "ModuleOp"> {
+  let summary = "Convert bufferized TensorView accesses to template calls";
+  let constructor = "mlir::createConvertTensorViewToTemplatePass()";
+  let dependentDialects = ["func::FuncDialect", "memref::MemRefDialect",
+    "arith::ArithDialect", "triton::tv::TensorViewDialect"];
+}
+
 #endif // BISHENGIR_CONVERSION_PASSES_H

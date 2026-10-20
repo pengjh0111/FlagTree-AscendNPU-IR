@@ -13,3 +13,5 @@ if(BISHENGIR_ENABLE_TORCH_CONVERSIONS)
   add_subdirectory(TorchToHFusion)
   add_subdirectory(TorchToSymbol)
 endif()
+
+add_subdirectory(TensorViewToTemplate)

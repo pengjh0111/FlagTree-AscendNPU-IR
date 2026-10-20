@@ -404,6 +404,12 @@ llvm::cl::values(
   }];
 }
 
+def EnableTensorViewDecompose : HIVMOptimizationControlOptions<
+  "Decompose TensorView in the frontend instead of using template calls.",
+  "bool",
+  "true"
+>;
+
 def EnableAutoBindSubBlock : HIVMOptimizationControlOptions<
   "Enable auto bind sub block.",
   "bool",
